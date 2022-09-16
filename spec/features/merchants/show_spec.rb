@@ -76,9 +76,39 @@ RSpec.describe("1.the merchant dashboard") do
       invoice_item2 = InvoiceItem.create!(      item_id: item2.id,       invoice_id: invoice2.id,       unit_price: item2.unit_price,       quantity: 2,       status: 0)
       invoice_item3 = InvoiceItem.create!(      item_id: item3.id,       invoice_id: invoice3.id,       unit_price: item3.unit_price,       quantity: 3,       status: 0)
       visit("/merchants/#{merchant1.id}/dashboard")
-      save_and_open_page
       click_link("#{invoice_item1.invoice_id}")
       expect(current_path).to(eq("/merchants/#{merchant1.id}/invoices/#{invoice_item1.invoice_id}"))
+    end
+  end
+
+  describe("5.next to each item i see the date the invoice was created") do
+    describe("5.list is ordered from oldest to newest") do
+      it("created at") do
+        merchant1 = Merchant.create!(        name: "Bob")
+        customer1 = Customer.create!(        first_name: "cx first name",         last_name: "cx last name")
+        invoice2 = customer1.invoices.create!(        status: 1,         created_at: "Tuesday, July 18, 2019 ,09:00:02")
+        invoice1 = customer1.invoices.create!(        status: 1,         created_at: "Monday, July 17, 2019 ,09:00:01")
+        invoice3 = customer1.invoices.create!(        status: 1,         created_at: "Wednesday, July 19, 2019.09:00:03")
+        item2 = merchant1.items.create!(        name: "item2",         description: "this is item2 description",         unit_price: 2)
+        item1 = merchant1.items.create!(        name: "item1",         description: "this is item1 description",         unit_price: 1)
+        item3 = merchant1.items.create!(        name: "item3",         description: "this is item3 description",         unit_price: 3)
+        invoice_item1 = InvoiceItem.create!(        item_id: item1.id,         invoice_id: invoice1.id,         unit_price: item1.unit_price,         quantity: 1,         status: 0)
+        invoice_item2 = InvoiceItem.create!(        item_id: item2.id,         invoice_id: invoice2.id,         unit_price: item2.unit_price,         quantity: 2,         status: 0)
+        invoice_item3 = InvoiceItem.create!(        item_id: item3.id,         invoice_id: invoice3.id,         unit_price: item3.unit_price,         quantity: 3,         status: 0)
+        visit("/merchants/#{merchant1.id}/dashboard")
+
+        within("#item-#{item1.id}") do
+          expect(page).to(have_content("created at #{invoice1.created_at}"))
+        end
+
+        within("#item-#{item2.id}") do
+          expect(page).to(have_content("created at #{invoice2.created_at}"))
+        end
+
+        save_and_open_page
+        expect(item1.name).to(appear_before(item2.name))
+        expect(item2.name).to(appear_before(item3.name))
+      end
     end
   end
 end
