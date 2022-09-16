@@ -86,9 +86,9 @@ RSpec.describe("1.the merchant dashboard") do
       it("created at") do
         merchant1 = Merchant.create!(        name: "Bob")
         customer1 = Customer.create!(        first_name: "cx first name",         last_name: "cx last name")
-        invoice2 = customer1.invoices.create!(        status: 1,         created_at: "Tuesday, July 18, 2019 ,09:00:02")
-        invoice1 = customer1.invoices.create!(        status: 1,         created_at: "Monday, July 17, 2019 ,09:00:01")
-        invoice3 = customer1.invoices.create!(        status: 1,         created_at: "Wednesday, July 19, 2019.09:00:03")
+        invoice2 = customer1.invoices.create!(        status: 1,         created_at: "Thurdsday, July 18, 2019 ")
+        invoice1 = customer1.invoices.create!(        status: 1,         created_at: "Wednesday, July 17, 2019 ")
+        invoice3 = customer1.invoices.create!(        status: 1,         created_at: "Friday, July 19, 2019")
         item2 = merchant1.items.create!(        name: "item2",         description: "this is item2 description",         unit_price: 2)
         item1 = merchant1.items.create!(        name: "item1",         description: "this is item1 description",         unit_price: 1)
         item3 = merchant1.items.create!(        name: "item3",         description: "this is item3 description",         unit_price: 3)
@@ -98,11 +98,11 @@ RSpec.describe("1.the merchant dashboard") do
         visit("/merchants/#{merchant1.id}/dashboard")
 
         within("#item-#{item1.id}") do
-          expect(page).to(have_content("created at #{invoice1.created_at}"))
+          expect(page).to(have_content("created at #{invoice1.created_at.strftime("%A,%B %d, %Y")}"))
         end
 
         within("#item-#{item2.id}") do
-          expect(page).to(have_content("created at #{invoice2.created_at}"))
+          expect(page).to(have_content("created at #{invoice2.created_at.strftime("%A,%B %d, %Y")}"))
         end
 
         save_and_open_page
