@@ -1,33 +1,114 @@
 require "rails_helper"
 
 
-RSpec.describe("1.the merchant dashboard") do
-  describe("1.visit my merchant dashboard") do
+
+RSpec.describe("the merchant dashboard") do
+  describe("visit my merchant dashboard") do
     it("I see the name of my merchant") do
       merchant1 = Merchant.create!(      name: "Bob")
+
       visit("/merchants/#{merchant1.id}/dashboard")
+
+
       expect(page).to(have_content("#{merchant1.name}"))
     end
 
     it("I see link to my merchant items and invoices index") do
       merchant1 = Merchant.create!(      name: "Bob")
+
       visit("/merchants/#{merchant1.id}/dashboard")
+
       expect(page).to(have_link("Items Index"))
       expect(page).to(have_link("Invoices Index"))
     end
 
     it("I can click on items index link and be directed") do
       merchant1 = Merchant.create!(      name: "Bob")
+
       visit("/merchants/#{merchant1.id}/dashboard")
+
       click_link("Items Index")
       expect(current_path).to(eq("/merchants/#{merchant1.id}/items"))
     end
 
     it("I can click the invoices index link and be directed") do
       merchant1 = Merchant.create!(      name: "Bob")
+
+
       visit("/merchants/#{merchant1.id}/dashboard")
+
       click_link("Invoices Index")
       expect(current_path).to(eq("/merchants/#{merchant1.id}/invoices"))
+    end
+
+    it 'I can see the top 5 favorite customers' do
+      merchant1 = Merchant.create!(name: "Bob")
+
+      7.times do
+        Customer.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+      end
+      
+      invoice_1 = Invoice.create!(customer_id: Customer.all[0].id, status: 'completed')
+      invoice_8 = Invoice.create!(customer_id: Customer.all[0].id, status: 'completed')
+      invoice_13 = Invoice.create!(customer_id: Customer.all[0].id, status: 'completed')
+
+      invoice_9 = Invoice.create!(customer_id: Customer.all[1].id, status: 'completed')
+      invoice_2 = Invoice.create!(customer_id: Customer.all[1].id, status: 'completed')
+
+      invoice_10 = Invoice.create!(customer_id: Customer.all[2].id, status: 'completed')
+      invoice_3 = Invoice.create!(customer_id: Customer.all[2].id, status: 'completed')
+      invoice_15 = Invoice.create!(customer_id: Customer.all[2].id, status: 'completed')
+
+      invoice_11 = Invoice.create!(customer_id: Customer.all[3].id, status: 'completed')
+      invoice_4 = Invoice.create!(customer_id: Customer.all[3].id, status: 'completed')
+
+      invoice_12 = Invoice.create!(customer_id: Customer.all[4].id, status: 'completed')
+      invoice_5 = Invoice.create!(customer_id: Customer.all[4].id, status: 'completed')
+
+      invoice_6 = Invoice.create!(customer_id: Customer.all[5].id, status: 'completed')
+
+      invoice_7 = Invoice.create!(customer_id: Customer.all[6].id, status: 'completed')
+      invoice_14 = Invoice.create!(customer_id: Customer.all[6].id, status: 'completed')
+
+      transaction_1 = Transaction.create!(invoice_id: invoice_1.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_2 = Transaction.create!(invoice_id: invoice_2.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_3 = Transaction.create!(invoice_id: invoice_3.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_4 = Transaction.create!(invoice_id: invoice_4.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_5 = Transaction.create!(invoice_id: invoice_5.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_6 = Transaction.create!(invoice_id: invoice_6.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_7 = Transaction.create!(invoice_id: invoice_7.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_8 = Transaction.create!(invoice_id: invoice_8.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_9 = Transaction.create!(invoice_id: invoice_9.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_10 = Transaction.create!(invoice_id: invoice_10.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_11 = Transaction.create!(invoice_id: invoice_11.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_12 = Transaction.create!(invoice_id: invoice_12.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      transaction_13 = Transaction.create!(invoice_id: invoice_13.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'failed' )
+      transaction_14 = Transaction.create!(invoice_id: invoice_14.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'failed' )
+      transaction_14 = Transaction.create!(invoice_id: invoice_15.id, credit_card_number: Faker::Number.number(digits: 16), credit_card_expiration_date: '', result: 'success' )
+      
+      visit("/merchants/#{merchant1.id}/dashboard")
+      
+      expect(page).to have_content('Favorite Customers')
+
+      within "#favorite_customer_#{Customer.all[2].id}" do
+        expect(page).to have_content("#{Customer.all[2].first_name} #{Customer.all[2].last_name} - 3 purchases")
+      end
+
+      within "#favorite_customer_#{Customer.all[1].id}" do
+        expect(page).to have_content("#{Customer.all[1].first_name} #{Customer.all[1].last_name} - 2 purchases")
+      end
+
+      within "#favorite_customer_#{Customer.all[0].id}" do
+        expect(page).to have_content("#{Customer.all[0].first_name} #{Customer.all[0].last_name} - 2 purchases")
+      end
+
+      within "#favorite_customer_#{Customer.all[4].id}" do
+        expect(page).to have_content("#{Customer.all[4].first_name} #{Customer.all[4].last_name} - 2 purchases")
+      end
+
+      within "#favorite_customer_#{Customer.all[3].id}" do
+        expect(page).to have_content("#{Customer.all[3].first_name} #{Customer.all[3].last_name} - 2 purchases")
+      end
     end
   end
 
