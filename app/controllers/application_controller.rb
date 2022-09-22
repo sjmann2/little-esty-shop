@@ -1,6 +1,11 @@
 # require "./app/facade/github_facade"
 
 class ApplicationController < ActionController::Base
+  private
+
+  def error_message(errors)
+    errors.full_messages.join(', ')
+  end
   # before_action :user_names, :repo_name, :get_pr
 
   # private
