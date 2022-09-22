@@ -4,6 +4,7 @@
 
 <p><%= link_to "Items Index", "/merchants/#{@merchant.id}/items"%></p>
 <p><%= link_to "Invoices Index", "/merchants/#{@merchant.id}/invoices"%></p>
+<p><%= link_to "View all discounts for #{@merchant.name}", merchant_bulk_discounts_path(@merchant) %></p>
 
 <h3>Items Ready to Ship</h3>
 <% @merchant.ready_to_ship.each do |item| %>
