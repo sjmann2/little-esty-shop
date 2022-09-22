@@ -1,51 +1,56 @@
 require "rails_helper"
 
 
-RSpec.describe("the merchant dashboard") do
-  describe("visit my merchant dashboard") do
-    it("I see the name of my merchant") do
-      merchant1 = Merchant.create!(      name: "Bob")
+RSpec.describe "The merchant dashboard" do
+  describe "When I visit my merchant dashboard" do
+    it "I see the name of my merchant" do
+      merchant1 = Merchant.create!(name: "Bob")
 
       visit merchant_dashboard_path(merchant1)
-      expect(page).to(have_content("#{merchant1.name}"))
+      expect(page).to have_content("#{merchant1.name}")
     end
 
-    it("I see link to my merchant items and invoices index") do
-      merchant1 = Merchant.create!(      name: "Bob")
+    it "I see link to my merchant items and invoices index" do
+      merchant1 = Merchant.create!(name: "Bob")
 
       visit merchant_dashboard_path(merchant1)
-      expect(page).to(have_link("Items Index"))
-      expect(page).to(have_link("Invoices Index"))
+
+      expect(page).to have_link("Items Index")
+      expect(page).to have_link("Invoices Index")
     end
 
-    it("I can click on items index link and be directed") do
-      merchant1 = Merchant.create!(      name: "Bob")
+    it "I can click on items index link and be directed" do
+      merchant1 = Merchant.create!(name: "Bob")
 
       visit merchant_dashboard_path(merchant1)
+
       click_link("Items Index")
-      expect(current_path).to(eq("/merchants/#{merchant1.id}/items"))
+
+      expect(current_path).to eq("/merchants/#{merchant1.id}/items")
     end
 
-    it("I can click the invoices index link and be directed") do
-      merchant1 = Merchant.create!(      name: "Bob")
+    it "I can click the invoices index link and be directed" do
+      merchant1 = Merchant.create!(name: "Bob")
 
       visit merchant_dashboard_path(merchant1)
+
       click_link("Invoices Index")
-      expect(current_path).to(eq("/merchants/#{merchant1.id}/invoices"))
+
+      expect(current_path).to eq("/merchants/#{merchant1.id}/invoices")
     end
   
-    it("I see a section for 'Items Ready to Ship'") do
-      merchant1 = Merchant.create!(      name: "Bob")
-      customer1 = Customer.create!(      first_name: "cx first name",       last_name: "cx last name")
-      invoice1 = customer1.invoices.create!(      status: 1,       created_at: "2021-09-14 09:00:01")
-      invoice2 = customer1.invoices.create!(      status: 1,       created_at: "2021-09-14 09:00:02")
-      invoice3 = customer1.invoices.create!(      status: 1,       created_at: "2021-09-14 09:00:03")
-      item1 = merchant1.items.create!(      name: "item1",       description: "this is item1 description",       unit_price: 1)
-      item2 = merchant1.items.create!(      name: "item2",       description: "this is item2 description",       unit_price: 2)
-      item3 = merchant1.items.create!(      name: "item3",       description: "this is item3 description",       unit_price: 3)
-      invoice_item1 = InvoiceItem.create!(      item_id: item1.id,       invoice_id: invoice1.id,       unit_price: item1.unit_price,       quantity: 1,       status: 0)
-      invoice_item2 = InvoiceItem.create!(      item_id: item2.id,       invoice_id: invoice2.id,       unit_price: item2.unit_price,       quantity: 2,       status: 0)
-      invoice_item3 = InvoiceItem.create!(      item_id: item3.id,       invoice_id: invoice3.id,       unit_price: item3.unit_price,       quantity: 3,       status: 0)
+    it "I see a section for 'Items Ready to Ship'" do
+      merchant1 = Merchant.create!(name: "Bob")
+      customer1 = Customer.create!(first_name: "cx first name", last_name: "cx last name")
+      invoice1 = customer1.invoices.create!(status: 1,created_at: "2021-09-14 09:00:01")
+      invoice2 = customer1.invoices.create!(status: 1, created_at: "2021-09-14 09:00:02")
+      invoice3 = customer1.invoices.create!(status: 1, created_at: "2021-09-14 09:00:03")
+      item1 = merchant1.items.create!(name: "item1", description: "this is item1 description", unit_price: 1)
+      item2 = merchant1.items.create!(name: "item2", description: "this is item2 description", unit_price: 2)
+      item3 = merchant1.items.create!(name: "item3", description: "this is item3 description", unit_price: 3)
+      invoice_item1 = InvoiceItem.create!(item_id: item1.id, invoice_id: invoice1.id, unit_price: item1.unit_price, quantity: 1, status: 0)
+      invoice_item2 = InvoiceItem.create!(item_id: item2.id, invoice_id: invoice2.id, unit_price: item2.unit_price, quantity: 2, status: 0)
+      invoice_item3 = InvoiceItem.create!(item_id: item3.id, invoice_id: invoice3.id, unit_price: item3.unit_price, quantity: 3, status: 0)
 
       visit merchant_dashboard_path(merchant1)
       
@@ -55,54 +60,55 @@ RSpec.describe("the merchant dashboard") do
       expect(page).to(have_content("#{item3.name}"))
     end
 
-    describe("4.And next to each Item I see the id of the invoice that ordered my item") do
-      it("And each invoice id is a link to my merchant's invoice show page") do
-        merchant1 = Merchant.create!(      name: "Bob")
-        customer1 = Customer.create!(      first_name: "cx first name",       last_name: "cx last name")
-        invoice1 = customer1.invoices.create!(      status: 1,       created_at: "2021-09-14 09:00:01")
-        invoice2 = customer1.invoices.create!(      status: 1,       created_at: "2021-09-14 09:00:02")
-        invoice3 = customer1.invoices.create!(      status: 1,       created_at: "2021-09-14 09:00:03")
-        item1 = merchant1.items.create!(      name: "item1",       description: "this is item1 description",       unit_price: 1)
-        item2 = merchant1.items.create!(      name: "item2",       description: "this is item2 description",       unit_price: 2)
-        item3 = merchant1.items.create!(      name: "item3",       description: "this is item3 description",       unit_price: 3)
-        invoice_item1 = InvoiceItem.create!(      item_id: item1.id,       invoice_id: invoice1.id,       unit_price: item1.unit_price,       quantity: 1,       status: 0)
-        invoice_item2 = InvoiceItem.create!(      item_id: item2.id,       invoice_id: invoice2.id,       unit_price: item2.unit_price,       quantity: 2,       status: 0)
-        invoice_item3 = InvoiceItem.create!(      item_id: item3.id,       invoice_id: invoice3.id,       unit_price: item3.unit_price,       quantity: 3,       status: 0)
+    describe "4.And next to each Item I see the id of the invoice that ordered my item" do
+      it "And each invoice id is a link to my merchant's invoice show page" do
+        merchant1 = Merchant.create!(name: "Bob")
+        customer1 = Customer.create!(first_name: "cx first name", last_name: "cx last name")
+        invoice1 = customer1.invoices.create!(status: 1, created_at: "2021-09-14 09:00:01")
+        invoice2 = customer1.invoices.create!(status: 1, created_at: "2021-09-14 09:00:02")
+        invoice3 = customer1.invoices.create!(status: 1, created_at: "2021-09-14 09:00:03")
+        item1 = merchant1.items.create!(name: "item1", description: "this is item1 description", unit_price: 1)
+        item2 = merchant1.items.create!(name: "item2", description: "this is item2 description", unit_price: 2)
+        item3 = merchant1.items.create!(name: "item3", description: "this is item3 description", unit_price: 3)
+        invoice_item1 = InvoiceItem.create!(item_id: item1.id, invoice_id: invoice1.id, unit_price: item1.unit_price, quantity: 1, status: 0)
+        invoice_item2 = InvoiceItem.create!(item_id: item2.id, invoice_id: invoice2.id, unit_price: item2.unit_price, quantity: 2, status: 0)
+        invoice_item3 = InvoiceItem.create!(item_id: item3.id, invoice_id: invoice3.id, unit_price: item3.unit_price, quantity: 3, status: 0)
         
         visit merchant_dashboard_path(merchant1)
         
         click_link("#{invoice_item1.invoice_id}")
-        expect(current_path).to(eq("/merchants/#{merchant1.id}/invoices/#{invoice_item1.invoice_id}"))
+
+        expect(current_path).to eq("/merchants/#{merchant1.id}/invoices/#{invoice_item1.invoice_id}")
       end
     end
 
-    describe("5.next to each item i see the date the invoice was created") do
-      describe("5.list is ordered from oldest to newest") do
-        it("created at") do
-          merchant1 = Merchant.create!(        name: "Bob")
-          customer1 = Customer.create!(        first_name: "cx first name",         last_name: "cx last name")
-          invoice2 = customer1.invoices.create!(        status: 1,         created_at: "Thurdsday, July 18, 2019 ")
-          invoice1 = customer1.invoices.create!(        status: 1,         created_at: "Wednesday, July 17, 2019 ")
-          invoice3 = customer1.invoices.create!(        status: 1,         created_at: "Friday, July 19, 2019")
-          item2 = merchant1.items.create!(        name: "item2",         description: "this is item2 description",         unit_price: 2)
-          item1 = merchant1.items.create!(        name: "item1",         description: "this is item1 description",         unit_price: 1)
-          item3 = merchant1.items.create!(        name: "item3",         description: "this is item3 description",         unit_price: 3)
-          invoice_item1 = InvoiceItem.create!(        item_id: item1.id,         invoice_id: invoice1.id,         unit_price: item1.unit_price,         quantity: 1,         status: 0)
-          invoice_item2 = InvoiceItem.create!(        item_id: item2.id,         invoice_id: invoice2.id,         unit_price: item2.unit_price,         quantity: 2,         status: 0)
-          invoice_item3 = InvoiceItem.create!(        item_id: item3.id,         invoice_id: invoice3.id,         unit_price: item3.unit_price,         quantity: 3,         status: 0)
+    describe "5.next to each item i see the date the invoice was created" do
+      describe "5.list is ordered from oldest to newest" do
+        it "created at" do
+          merchant1 = Merchant.create!(name: "Bob")
+          customer1 = Customer.create!(first_name: "cx first name", last_name: "cx last name")
+          invoice2 = customer1.invoices.create!(status: 1, created_at: "Thursday, July 18, 2019")
+          invoice1 = customer1.invoices.create!(status: 1, created_at: "Wednesday, July 17, 2019")
+          invoice3 = customer1.invoices.create!(status: 1, created_at: "Friday, July 19, 2019")
+          item2 = merchant1.items.create!(name: "item2", description: "this is item2 description", unit_price: 2)
+          item1 = merchant1.items.create!(name: "item1", description: "this is item1 description", unit_price: 1)
+          item3 = merchant1.items.create!(name: "item3", description: "this is item3 description", unit_price: 3)
+          invoice_item1 = InvoiceItem.create!(item_id: item1.id, invoice_id: invoice1.id, unit_price: item1.unit_price, quantity: 1, status: 0)
+          invoice_item2 = InvoiceItem.create!(item_id: item2.id, invoice_id: invoice2.id, unit_price: item2.unit_price, quantity: 2, status: 0)
+          invoice_item3 = InvoiceItem.create!(item_id: item3.id, invoice_id: invoice3.id, unit_price: item3.unit_price, quantity: 3, status: 0)
         
           visit merchant_dashboard_path(merchant1)
         
           within("#item-#{item1.id}") do
-            expect(page).to(have_content("created at #{invoice1.created_at.strftime("%A,%B %d, %Y")}"))
+            expect(page).to have_content("created at #{invoice1.created_at.strftime("%A,%B %d, %Y")}")
           end
 
           within("#item-#{item2.id}") do
-            expect(page).to(have_content("created at #{invoice2.created_at.strftime("%A,%B %d, %Y")}"))
+            expect(page).to have_content("created at #{invoice2.created_at.strftime("%A,%B %d, %Y")}")
           end
           
-          expect(item1.name).to(appear_before(item2.name))
-          expect(item2.name).to(appear_before(item3.name))
+          expect(item1.name).to appear_before(item2.name)
+          expect(item2.name).to appear_before(item3.name)
           expect(item3.name).to_not appear_before(item1.name)
         end
       end
@@ -156,5 +162,28 @@ RSpec.describe("the merchant dashboard") do
         expect(page).to_not have_content("#{customer7.first_name} #{customer7.last_name} - 1 purchases")
       end
     end
+
+    describe 'I see a link to view all my discounts that takes me to the bulk discount index page' do
+      it 'displays a link the bulk discount index page for this merchant' do
+        merchant = create(:random_merchant)
+        bulk_discount_a = BulkDiscount.create!(percentage_discount: '20% off', quantity_threshold: 10)
+
+        visit merchant_dashboard_path(merchant)
+
+        click_link "View all discounts for #{merchant.name}"
+
+        expect(current_path).to eq(merchant_bulk_discounts_path(merchant))
+      end
+    end
   end
 end
+# Merchant Bulk Discounts Index
+
+# As a merchant
+# When I visit my merchant dashboard
+# Then I see a link to view all my discounts
+# When I click this link
+# Then I am taken to my bulk discounts index page
+# Where I see all of my bulk discounts including their
+# percentage discount and quantity thresholds
+# And each bulk discount listed includes a link to its show page
