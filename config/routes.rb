@@ -1,5 +1,7 @@
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
+  get '/', to: 'application#welcome'
+  
   namespace(:admin) do
     resources(:merchants,     except: [:destroy])
     resources(:invoices,     only: [:index, :show, :update])
