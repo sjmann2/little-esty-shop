@@ -1,6 +1,5 @@
 require "rails_helper"
 
-
 RSpec.describe "the merchant invoices show"  do
     describe 'I see all information related to that invoice' do
         it 'can display the invoice id' do
@@ -197,4 +196,29 @@ RSpec.describe "the merchant invoices show"  do
             end
         end
     end
+
+    describe 'I see the total revenue for my merchant from this invoice(not including discounts)' do
+        describe 'I see the total discounted revenue for my merchant from this invoice' do
+            let!(:merchant_1) {create(:random_merchant)}
+            let!(:customer_1) {create(:random_customer)}
+            let!(:invoice_1) {customer_1.invoices.create!(status: 1)}
+            let!(:bulk_discount_1) {merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)}
+            let!(:bulk_discount_2) {merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)}
+            let!(:item_1) {merchant_1.items.create!(name: "10 lb bag of flour", description: "10 pounds of it", unit_price: 1000)}
+            let!(:invoice_item_1) {InvoiceItem.create!(item: item_1, invoice: invoice_1, unit_price: 1000, quantity: 10, status: 2)}
+            
+            it 'displays total revenue before discounts and total after discounts' do
+                visit merchant_invoice_path(merchant_1, invoice_1)
+                
+                expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $10000")
+                expect(page).to have_content("Total Revenue After Discount: $800.0")
+            end
+        end
+    end
 end
+# Merchant Invoice Show Page: Total Revenue and Discounted Revenue
+
+# As a merchant
+# When I visit my merchant invoice show page
+# Then I see the total revenue for my merchant from this invoice (not including discounts)
+# And I see the total discounted revenue for my merchant from this invoice which includes bulk discounts in the calculation

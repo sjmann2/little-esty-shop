@@ -58,7 +58,7 @@ RSpec.describe(Invoice, type: :model) do
     end
   end
 
-  describe 'class methods' do
+  describe 'instance methods' do
     describe 'total_revenue' do
       it 'calculates the total revenue for each invoice' do
         customer_1 = create(:random_customer)
@@ -78,6 +78,26 @@ RSpec.describe(Invoice, type: :model) do
 
         expect(invoice_1.total_revenue).to eq(30299)
         expect(invoice_2.total_revenue).to eq(0)
+      end
+    end
+
+    describe 'discount_revenue' do
+      let!(:merchant_1) {create(:random_merchant)}
+      let!(:customer_1) {create(:random_customer)}
+      let!(:invoice_1) {customer_1.invoices.create!(status: 1)}
+      let!(:invoice_2) {customer_1.invoices.create!(status: 1)}
+    
+      let!(:bulk_discount_1) {merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)}
+      let!(:bulk_discount_2) {merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)}
+      let!(:item_1) {merchant_1.items.create!(name: "10 lb bag of flour", description: "10 pounds of it", unit_price: 1000)}
+      let!(:invoice_item_1) {InvoiceItem.create!(item: item_1, invoice: invoice_1, unit_price: 1000, quantity: 10, status: 2)}
+
+      it 'calculates the total revenue for each invoice after bulk discounts are applied' do
+        expect(invoice_1.discount_revenue).to eq(800)
+      end
+
+      it 'will return zero if an invoice has no items' do
+        expect(invoice_2.discount_revenue).to eq(0)
       end
     end
   end
