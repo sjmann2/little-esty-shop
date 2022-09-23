@@ -10,13 +10,13 @@
   </head>
 
   <body>
-    <% if alert %>
+  <% if alert %>
     <% flash.each do |type, msg| %>
-    <%= msg %>
+      <%= msg %>
   <% end %>
 <% end %>
 
-    <%= yield %>
+  <%= yield %>
   </body>
 <%# <footer>
   <p>Repository name:<%= @repo_name %></p>
