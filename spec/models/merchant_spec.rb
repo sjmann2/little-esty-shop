@@ -14,6 +14,7 @@ RSpec.describe(Merchant, type: :model) do
     it { should have_many(:invoices).through(:invoice_items) }
     it { should have_many(:customers).through(:invoices) }
     it { should have_many(:transactions).through(:invoices) }
+    it { should have_many(:bulk_discounts)}
   end
 
   describe("validations") do
@@ -162,7 +163,7 @@ RSpec.describe(Merchant, type: :model) do
       let!(:item_8) {create(:random_item, merchant_id: merchant_1.id)}
       let!(:item_9) {create(:random_item, merchant_id: merchant_1.id)}
       let!(:item_10) {create(:random_item, merchant_id: merchant_2.id)}
-      #for top 5 merchants only
+     
       let!(:item_11) {create(:random_item, merchant_id: merchant_3.id)}
       let!(:item_12) {create(:random_item, merchant_id: merchant_3.id)}
       let!(:item_13) {create(:random_item, merchant_id: merchant_4.id)}
@@ -182,7 +183,7 @@ RSpec.describe(Merchant, type: :model) do
       let!(:invoice_4) {Invoice.create!(customer_id: customer_4.id, created_at: Time.new(2019, 3, 3, 12, 11, 9), status: 'completed')}
       let!(:invoice_5) {Invoice.create!(customer_id: customer_4.id, created_at: Time.new(2018, 2, 3, 12, 11, 9), status: 'completed')}
       let!(:invoice_6) {Invoice.create!(customer_id: customer_4.id, created_at: Time.new(2016, 9, 3, 9, 11, 9), status: 'completed')}
-      #for top5merchants only
+      
       let!(:invoice_7) {Invoice.create!(customer_id: customer_3.id, created_at: Time.new(2016, 9, 3, 9, 11, 9), status: 'completed')}
       let!(:invoice_8) {Invoice.create!(customer_id: customer_3.id, created_at: Time.new(2016, 9, 3, 9, 11, 9), status: 'completed')}
       let!(:invoice_9) {Invoice.create!(customer_id: customer_3.id, created_at: Time.new(2016, 9, 3, 9, 11, 9), status: 'completed')}

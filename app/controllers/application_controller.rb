@@ -1,22 +1,27 @@
-require "./app/facade/github_facade"
+# require "./app/facade/github_facade"
 
 class ApplicationController < ActionController::Base
-  before_action :user_names, :repo_name, :get_pr
-
   private
 
-  def user_names
-    @user_names = GitHubFacade.user_names
+  def error_message(errors)
+    errors.full_messages.join(', ')
   end
+  # before_action :user_names, :repo_name, :get_pr
 
-  def repo_name
-    @repo_name = GitHubFacade.repo_name
-  end
+  # private
+
+  # def user_names
+  #   @user_names = GitHubFacade.user_names
+  # end
+
+  # def repo_name
+  #   @repo_name = GitHubFacade.repo_name
+  # end
 
 
-  def get_pr
-    @repo_pr_number = GitHubFacade.pull_requests
-  end
+  # def get_pr
+  #   @repo_pr_number = GitHubFacade.pull_requests
+  # end
 
   # def commits
   #   @commits = GitHubFacade.all_commits
