@@ -69,15 +69,34 @@ RSpec.describe 'the bulk discounts index page' do
         end
       end
     end
+
+    describe 'Next to each discount I see a link to delete it' do
+      describe 'When I click this link I am redirected to the index page and I no longer see the discount listed' do
+        let!(:merchant_1) {create(:random_merchant)}
+        let!(:bulk_discount_1) {merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)}
+        let!(:bulk_discount_2) {merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)}
+        
+        it 'displays a link to delete a bulk discount' do
+          visit merchant_bulk_discounts_path(merchant_1)
+          
+          expect(page).to have_content("20% off 10 or more of an item")
+
+          within "#bulk-discount-#{bulk_discount_1.id}" do
+            click_on "Delete discount"
+          end
+
+          expect(current_path).to eq(merchant_bulk_discounts_path(merchant_1))
+          expect(page).to_not have_content("20% off 10 or more of an item")
+        end
+      end
+    end
   end
 end
-# Merchant Bulk Discount Create
+# Merchant Bulk Discount Delete
 
 # As a merchant
 # When I visit my bulk discounts index
-# Then I see a link to create a new discount
+# Then next to each bulk discount I see a link to delete it
 # When I click this link
-# Then I am taken to a new page where I see a form to add a new bulk discount
-# When I fill in the form with valid data
-# Then I am redirected back to the bulk discount index
-# And I see my new bulk discount listed
+# Then I am redirected back to the bulk discounts index page
+# And I no longer see the discount listed
