@@ -26,13 +26,10 @@ RSpec.describe 'the bulk discount show page' do
 
           click_link "Edit bulk discount"
 
-          expect(current_path).to eq(edit_merchant_bulk_discount(merchant_1, bulk_discount_1))
-          expect(page.has_field? 'Percentage discount').to be(true)
-          expect(page.has_field? 'Quantity threshold').to be(true)
-
-          expect(page).to have_content('20')
-          expect(page).to have_content('10')
-
+          expect(current_path).to eq(edit_merchant_bulk_discount_path(merchant_1, bulk_discount_1))
+          expect(page).to have_field('Percentage discount', with: '20')
+          expect(page).to have_field('Quantity threshold', with: '10')
+          
           fill_in 'Percentage discount', with: '15'
           click_button 'Submit'
 
@@ -40,6 +37,18 @@ RSpec.describe 'the bulk discount show page' do
 
           expect(page).to have_content("Percentage discount: 15")
           expect(page).to have_content("Quantity threshold: 10")
+        end
+
+        it 'Will redirect to the edit form and flash an error message if form is not filled in with correct values' do
+          visit merchant_bulk_discount_path(merchant_1, bulk_discount_1)
+          
+          click_link "Edit bulk discount"
+
+          fill_in 'Percentage discount', with: ''
+          click_button 'Submit'
+
+          expect(current_path).to eq(edit_merchant_bulk_discount_path(merchant_1, bulk_discount_1))
+          expect(page).to have_content('Error: Percentage discount is not a number')
         end
       end
     end
