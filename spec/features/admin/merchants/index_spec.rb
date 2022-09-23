@@ -95,13 +95,13 @@ RSpec.describe 'As an admin, when I visit the admin merchant index' do
     end
   end
 
-  describe ":top 5 merchant display:" do
-    it "displays the 5 merchants with the highest total revenue" do
-      #within(block) expect(page).to have_content(merchant1 name, revenue)
-      #within(block) expect(page).to have_content(merchant1 name, revenue)
-      #within(block) expect(page).to have_content(merchant1 name, revenue)
-    end
-  end
+  # describe ":top 5 merchant display:" do
+  #   it "displays the 5 merchants with the highest total revenue" do
+  #     #within(block) expect(page).to have_content(merchant1 name, revenue)
+  #     #within(block) expect(page).to have_content(merchant1 name, revenue)
+  #     #within(block) expect(page).to have_content(merchant1 name, revenue)
+  #   end
+  # end
 end
 
 
