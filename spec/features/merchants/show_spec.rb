@@ -44,7 +44,7 @@ RSpec.describe "The merchant dashboard" do
       customer1 = Customer.create!(first_name: "cx first name", last_name: "cx last name")
       invoice1 = customer1.invoices.create!(status: 1,created_at: "2021-09-14 09:00:01")
       invoice2 = customer1.invoices.create!(status: 1, created_at: "2021-09-14 09:00:02")
-      invoice3 = customer1.invoices.create!(status: 1, created_at: "2021-09-14 09:00:03")
+      invoice3 = customer1.invoices.create!(status: 0, created_at: "2021-09-14 09:00:03")
       item1 = merchant1.items.create!(name: "item1", description: "this is item1 description", unit_price: 1)
       item2 = merchant1.items.create!(name: "item2", description: "this is item2 description", unit_price: 2)
       item3 = merchant1.items.create!(name: "item3", description: "this is item3 description", unit_price: 3)

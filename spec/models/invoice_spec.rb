@@ -108,7 +108,7 @@ RSpec.describe(Invoice, type: :model) do
       let!(:item_1) {merchant_1.items.create!(name: "10 lb bag of flour", description: "10 pounds of it", unit_price: 1000)}
       let!(:invoice_item_1) {InvoiceItem.create!(item: item_1, invoice: invoice_1, unit_price: 1000, quantity: 10, status: 2)}
 
-      it 'calculates the total revenue for each invoice after bulk discounts are applied' do
+      it 'calculates the total discounted revenue for each invoice after bulk discounts are applied' do
         expect(invoice_1.discounted_revenue).to eq(8000)
       end
 
