@@ -27,7 +27,7 @@ RSpec.describe "the merchant invoices show"  do
             
             visit merchant_invoice_path(merchant1, invoice_1)
             
-            expect(page).to have_content("Created: #{invoice_1.created_at.strftime("%A,%B %d, %Y")}")
+            expect(page).to have_content("Created: #{invoice_1.created_at.strftime("%A, %B %d, %Y")}")
         end
 
         it 'can display the customers first and last name' do
@@ -210,8 +210,8 @@ RSpec.describe "the merchant invoices show"  do
             it 'displays total revenue before discounts and total after discounts' do
                 visit merchant_invoice_path(merchant_1, invoice_1)
                 
-                expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $10000")
-                expect(page).to have_content("Total Revenue After Discount: $800.0")
+                expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $100.0")
+                expect(page).to have_content("Total Revenue After Discount #{invoice_1.id}: $80.0")
             end
         end
     end

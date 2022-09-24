@@ -151,7 +151,7 @@ RSpec.describe("the merchant items index") do
           expect(current_path).to eq("/merchants/#{merchant_1.id}/items/#{item_8.id}")
 
           expect(page).to have_content(item_8.name)
-          expect(page).to have_content(item_8.unit_price)
+          expect(page).to have_content(item_8.unit_price/100.0)
         end
       end
     end
