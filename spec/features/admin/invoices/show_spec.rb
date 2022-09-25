@@ -80,7 +80,7 @@ describe 'the admin invoices show page' do
 
         visit admin_invoice_path(invoice_1)
 
-        expect(page).to have_content('Total Revenue: $302.99')
+        expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $302.99")
       end
     end
 
@@ -131,7 +131,7 @@ describe 'the admin invoices show page' do
           visit admin_invoice_path(invoice_1)
         
           expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $151.5")
-          expect(page).to have_content("Total Revenue After Discount #{invoice_1.id}: $124.2")
+          expect(page).to have_content("Total Revenue After Discount: $124.2")
         end
       end
     end
