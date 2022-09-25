@@ -3,15 +3,15 @@
 
 <ul>
     <li>Invoice: <%= @invoice.id %></li>
-    <li>Invoice Status: </li>
+    <li>Invoice Status: 
     <%= render partial: './invoice_status_form', locals: { path: merchant_invoice_path(@merchant, @invoice), 
                                             method: :patch,
                                             label: :status,
                                             options: ['cancelled', 'in progress', 'completed'],
                                             selected: @invoice.status,
-                                            submit: "Update Invoice Status" } %> 
+                                            submit: "Update Invoice Status" } %> </li>
        
-    <li>Created: <%= "#{@invoice.created_at.strftime("%A,%B %d, %Y")}" %></li>
+    <li>Created: <%= "#{@invoice.created_at.strftime("%A, %B %d, %Y")}" %></li>
     <li>Customer: <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %></li>
 </ul>
 
@@ -22,10 +22,11 @@
 <ul>
     <li>Item Name: <%= invoice_item.item.name %></li>
     <li>Item Quantity: <%= invoice_item.quantity %></li>
-    <li>Item Sold For: $<%= (invoice_item.unit_price.to_f)/ 100.round(2) %></li>
+    <li>Item Sold For: $<%= convert_to_dollars(invoice_item.unit_price) %></li>
     <li>Item Status: <%= invoice_item.status %></li>
 </ul>
 <% end %>
 
 
-<h3>Total Revenue for Invoice <%= "#{@invoice.id}" %>: $<%= "#{(@invoice.total_revenue.to_f)/ 100.round(2)}" %></h3>
+<h3>Total Revenue for Invoice <%= @invoice.id %>: $<%= convert_to_dollars(@merchant.total_revenue) %></h3>
+<h3>Total Revenue After Discount: $<%= convert_to_dollars(@merchant.discounted_revenue)%></h3>

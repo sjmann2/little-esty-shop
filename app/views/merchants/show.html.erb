@@ -8,7 +8,7 @@
 
 <h3>Items Ready to Ship</h3>
 <% @merchant.ready_to_ship.each do |item| %>
-  <% item.invoices.each do|invoice| %>
+  <% item.invoices.each do |invoice| %>
 <div id="item-<%=item.id%>">
   <p><%= item.name %> || invoice# <%=link_to "#{invoice.id}","/merchants/#{@merchant.id}/invoices/#{invoice.id}" %> created at <%= invoice.created_at.strftime("%A,%B %d, %Y") %></p>
 </div>

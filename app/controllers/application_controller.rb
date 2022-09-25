@@ -1,6 +1,8 @@
 # require "./app/facade/github_facade"
 
 class ApplicationController < ActionController::Base
+  def welcome
+  end
   private
 
   def error_message(errors)
