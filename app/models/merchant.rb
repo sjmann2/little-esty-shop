@@ -9,7 +9,7 @@ class Merchant < ApplicationRecord
   validates_presence_of :name
   validates :enabled, inclusion: { in: [ true, false ] }
 
-  def ready_to_ship
+  def ready_to_ship    
     items
     .select("items.*, invoice_items.status, invoices.created_at")
     .joins( :invoices )
@@ -46,12 +46,6 @@ class Merchant < ApplicationRecord
     .limit(5)
   end
 
-  def total_revenue
-    invoice_items
-    .where('invoice_items.status = 2')
-    .sum("invoice_items.quantity * invoice_items.unit_price")
-  end
-
   def top_5_items
     items
     .joins(invoices: :transactions)
@@ -60,5 +54,27 @@ class Merchant < ApplicationRecord
     .group('items.id')
     .order('revenue desc')
     .limit(5)
+  end
+    
+  def total_revenue
+    invoice_items
+    .where('invoice_items.status = 2')
+    .sum("invoice_items.quantity * invoice_items.unit_price")
+  end
+
+  def discount
+    Merchant.from(
+      invoice_items
+      .select('invoice_items.quantity * invoice_items.unit_price * MAX(bulk_discounts.percentage_discount) / 100.00 AS discount')
+      .joins(item: [{merchant: :bulk_discounts}])
+      .where('status = 2')
+      .where('invoice_items.quantity >= bulk_discounts.quantity_threshold')
+      .group('invoice_items.id, invoice_items.quantity, invoice_items.unit_price')
+    )
+    .sum('discount')
+  end
+
+  def discounted_revenue
+    total_revenue - discount
   end
 end
