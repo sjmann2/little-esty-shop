@@ -229,11 +229,6 @@ RSpec.describe "the merchant invoices show"  do
         expect(page).to have_content("Bulk Discount Applied: #{bulk_discount_1.id}")
         click_link "#{bulk_discount_1.id}"
       end
-
-      within "#invoice_item-#{invoice_item_2.id}" do
-        expect(page).to have_content("Bulk Discount Applied: No Bulk Discount Applied")
-        expect(page).to_not have_link("No Bulk Discount Applied")
-      end
     
       expect(current_path).to eq(merchant_bulk_discount_path(merchant_1, bulk_discount_1))
     end
