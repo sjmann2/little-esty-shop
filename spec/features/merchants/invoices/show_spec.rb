@@ -124,22 +124,17 @@ RSpec.describe "the merchant invoices show"  do
         end
 
         describe 'I can see the total revenue' do
-            it 'from all merchant items within this invoice' do
-                merchant1 = Merchant.create!(name: "Bob")
-                merchant2 = Merchant.create!(name: "Mark")
-                customer1 = Customer.create!(first_name: "Jolene", last_name: "Jones")
-                invoice_1 = customer1.invoices.create!(status: 1, created_at: "2021-09-14 09:00:01")
-                item1 = merchant1.items.create!(name: "item1", description: "this is item1 description", unit_price: 1)
-                item2 = merchant1.items.create!(name: "item2", description: "this is item2 description", unit_price: 2)
-                item3 = merchant1.items.create!(name: "item3", description: "this is item3 description", unit_price: 3)
-                item4 = merchant2.items.create!(name: "item4", description: "this is item4 description", unit_price: 3)
-                invoice_item1 = InvoiceItem.create!(item_id: item1.id, invoice_id: invoice_1.id, unit_price: item1.unit_price, quantity: 1, status: 0)
-                invoice_item2 = InvoiceItem.create!(item_id: item2.id, invoice_id: invoice_1.id, unit_price: item2.unit_price, quantity: 1, status: 0)
-                invoice_item3 = InvoiceItem.create!(item_id: item3.id, invoice_id: invoice_1.id, unit_price: item3.unit_price, quantity: 1, status: 0)    
-
-                visit merchant_invoice_path(merchant1, invoice_1)
+            it 'displays total revenue from all merchant items within an invoice' do
+                merchant_1 = create(:random_merchant)
+                customer_1 = create(:random_customer)
+                invoice_1 = customer_1.invoices.create!(status: 1)
+                item_1 = merchant_1.items.create!(name: "Lemons", description: "Sour", unit_price: 100)
+                item_2 = merchant_1.items.create!(name: "Limes", description: "Citrus", unit_price: 100)
+                invoice_item_1 = InvoiceItem.create!(item: item_1, invoice: invoice_1, unit_price: 100, quantity: 10, status: 2)
+                invoice_item_2 = InvoiceItem.create!(item: item_2, invoice: invoice_1, unit_price: 100, quantity: 5, status: 2)
+                visit merchant_invoice_path(merchant_1, invoice_1)
  
-                expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $0.06")
+                expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $15.0")
             end
         end
 
@@ -199,19 +194,20 @@ RSpec.describe "the merchant invoices show"  do
 
     describe 'I see the total revenue for my merchant from this invoice(not including discounts)' do
         describe 'I see the total discounted revenue for my merchant from this invoice' do
-            let!(:merchant_1) {create(:random_merchant)}
-            let!(:customer_1) {create(:random_customer)}
-            let!(:invoice_1) {customer_1.invoices.create!(status: 1)}
-            let!(:bulk_discount_1) {merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)}
-            let!(:bulk_discount_2) {merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)}
-            let!(:item_1) {merchant_1.items.create!(name: "10 lb bag of flour", description: "10 pounds of it", unit_price: 1000)}
-            let!(:invoice_item_1) {InvoiceItem.create!(item: item_1, invoice: invoice_1, unit_price: 1000, quantity: 10, status: 2)}
-            
             it 'displays total revenue before discounts and total after discounts' do
+                merchant_1 = create(:random_merchant)
+                customer_1 = create(:random_customer)
+                invoice_1 = customer_1.invoices.create!(status: 1)
+                bulk_discount_2 = merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
+                item_1 = merchant_1.items.create!(name: "Lemons", description: "Sour", unit_price: 100)
+                item_2 = merchant_1.items.create!(name: "Limes", description: "Citrus", unit_price: 100)
+                invoice_item_1 = InvoiceItem.create!(item: item_1, invoice: invoice_1, unit_price: 100, quantity: 10, status: 2)
+                invoice_item_2 = InvoiceItem.create!(item: item_2, invoice: invoice_1, unit_price: 100, quantity: 5, status: 2)
+
                 visit merchant_invoice_path(merchant_1, invoice_1)
                 
-                expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $100.0")
-                expect(page).to have_content("Total Revenue After Discount #{invoice_1.id}: $80.0")
+                expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $15.0")
+                expect(page).to have_content("Total Revenue After Discount #{invoice_1.id}: $13.0")
             end
         end
     end

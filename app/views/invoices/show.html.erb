@@ -28,5 +28,5 @@
 <% end %>
 
 
-<h3>Total Revenue for Invoice <%= @invoice.id %>: $<%= convert_to_dollars(@invoice.total_revenue) %></h3>
-<h3>Total Revenue After Discount <%= @invoice.id%>: $<%= convert_to_dollars(@invoice.discounted_revenue)%></h3>
+<h3>Total Revenue for Invoice <%= @invoice.id %>: $<%= convert_to_dollars(@merchant.total_revenue) %></h3>
+<h3>Total Revenue After Discount <%= @invoice.id%>: $<%= convert_to_dollars(@merchant.discounted_revenue)%></h3>
