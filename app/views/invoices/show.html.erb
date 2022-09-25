@@ -2,17 +2,17 @@
 <h1>Invoice <%= @invoice.id %> Information </h1>
 
 <ul>
-    <li>Invoice: <%= @invoice.id %></li>
-    <li>Invoice Status: 
-    <%= render partial: './invoice_status_form', locals: { path: merchant_invoice_path(@merchant, @invoice), 
-                                            method: :patch,
-                                            label: :status,
-                                            options: ['cancelled', 'in progress', 'completed'],
-                                            selected: @invoice.status,
-                                            submit: "Update Invoice Status" } %> </li>
-       
-    <li>Created: <%= "#{@invoice.created_at.strftime("%A, %B %d, %Y")}" %></li>
-    <li>Customer: <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %></li>
+  <li>Invoice: <%= @invoice.id %></li>
+  <li>Invoice Status: 
+  <%= render partial: './invoice_status_form', locals: { path: merchant_invoice_path(@merchant, @invoice), 
+                      method: :patch,
+                      label: :status,
+                      options: ['cancelled', 'in progress', 'completed'],
+                      selected: @invoice.status,
+                      submit: "Update Invoice Status" } %> </li>
+     
+  <li>Created: <%= "#{@invoice.created_at.strftime("%A, %B %d, %Y")}" %></li>
+  <li>Customer: <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %></li>
 </ul>
 
 
@@ -20,11 +20,15 @@
 
 <% @invoice_items.each do |invoice_item|%>
 <ul>
+  <div id="invoice_item-<%=invoice_item.id%>">
     <li>Item Name: <%= invoice_item.item.name %></li>
     <li>Item Quantity: <%= invoice_item.quantity %></li>
     <li>Item Sold For: $<%= convert_to_dollars(invoice_item.unit_price) %></li>
     <li>Item Status: <%= invoice_item.status %></li>
+    <li>Bulk Discount Applied: <%=  %></li>
+  </div>
 </ul>
+
 <% end %>
 
 
