@@ -20,17 +20,20 @@
 
 <% @invoice_items.each do |invoice_item|%>
 <ul>
-  <div id="invoice_item-<%=invoice_item.id%>">
     <li>Item Name: <%= invoice_item.item.name %></li>
     <li>Item Quantity: <%= invoice_item.quantity %></li>
     <li>Item Sold For: $<%= convert_to_dollars(invoice_item.unit_price) %></li>
     <li>Item Status: <%= invoice_item.status %></li>
-    <li>Bulk Discount Applied: <%=  %></li>
-  </div>
+    <div id="invoice_item-<%=invoice_item.id%>">
+        <li>Bulk Discount Applied: 
+        <% if invoice_item.discount_applied == "No discount applied" %>
+            <%= "No discount applied" %>
+        <% else %>
+            <%= link_to "#{invoice_item.discount_applied}", merchant_bulk_discount_path(@merchant, invoice_item.discount_applied) %></li>
+        <% end %>
+    </div>
 </ul>
-
 <% end %>
-
 
 <h3>Total Revenue for Invoice <%= @invoice.id %>: $<%= convert_to_dollars(@merchant.total_revenue) %></h3>
 <h3>Total Revenue After Discount: $<%= convert_to_dollars(@merchant.discounted_revenue)%></h3>

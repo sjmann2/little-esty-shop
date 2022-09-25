@@ -12,5 +12,21 @@ class InvoiceItem < ApplicationRecord
   validates_presence_of :unit_price
   validates_numericality_of :unit_price
   validates_presence_of :status
+
+  def discount_applied
+  discount = InvoiceItem
+    .select('bulk_discounts.id as discount_id, invoice_items.*')
+    .where('invoice_items.id = ?', self.id)
+    .joins(item: [{merchant: :bulk_discounts}])
+    .where('invoice_items.quantity >= bulk_discounts.quantity_threshold')
+    .order('bulk_discounts.quantity_threshold desc')
+    .first
+    
+    if discount == nil
+      return 'No discount applied'
+    else
+      discount.discount_id
+    end
+  end
 end
 
