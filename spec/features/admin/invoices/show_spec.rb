@@ -111,5 +111,38 @@ describe 'the admin invoices show page' do
         end
       end
     end
+
+    describe 'I see the total revenue from this invoice(not including discounts)' do
+      describe 'I see the total discounted revenue from this invoice including bulk discounts' do
+        it 'displays total revenue before discounts and total after discounts' do
+          merchant_1 = create(:random_merchant)
+          merchant_2 = create(:random_merchant)
+          customer_1 = create(:random_customer)
+          bulk_discount_1 = merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
+          bulk_discount_2 = merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
+          invoice_1 = customer_1.invoices.create!(status: 1)
+          item_1 = merchant_1.items.create!(name: "Spoons", description: "Hold food", unit_price: 200)
+          item_2 = merchant_1.items.create!(name: "Toe rings", description: "Stylish", unit_price: 500)
+          item_3 = merchant_2.items.create!(name: "Fake spiders", description: "Spooky", unit_price: 350)
+          invoice_item_1 = InvoiceItem.create!(item: item_1, invoice: invoice_1, unit_price: 200, quantity: 12, status: 2)
+          invoice_item_2 = InvoiceItem.create!(item: item_2, invoice: invoice_1, unit_price: 500, quantity: 15, status: 2)
+          invoice_item_3 = InvoiceItem.create!(item: item_3, invoice: invoice_1, unit_price: 350, quantity: 15, status: 2)
+
+          visit admin_invoice_path(invoice_1)
+        
+          expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $151.5")
+          expect(page).to have_content("Total Revenue After Discount #{invoice_1.id}: $124.2")
+        end
+      end
+    end
   end
 end
+ 
+
+# Admin Invoice Show Page: Total Revenue and Discounted Revenue
+
+# As an admin
+# When I visit an admin invoice show page
+# Then I see the total revenue from this invoice (not including discounts)
+# And I see the total discounted revenue from this invoice which includes bulk discounts in the calculation
+
