@@ -2,17 +2,17 @@
 <h1>Invoice <%= @invoice.id %> Information </h1>
 
 <ul>
-    <li>Invoice: <%= @invoice.id %></li>
-    <li>Invoice Status: 
-    <%= render partial: './invoice_status_form', locals: { path: merchant_invoice_path(@merchant, @invoice), 
-                                            method: :patch,
-                                            label: :status,
-                                            options: ['cancelled', 'in progress', 'completed'],
-                                            selected: @invoice.status,
-                                            submit: "Update Invoice Status" } %> </li>
-       
-    <li>Created: <%= "#{@invoice.created_at.strftime("%A, %B %d, %Y")}" %></li>
-    <li>Customer: <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %></li>
+  <li>Invoice: <%= @invoice.id %></li>
+  <li>Invoice Status: 
+  <%= render partial: './invoice_status_form', locals: { path: merchant_invoice_path(@merchant, @invoice), 
+                      method: :patch,
+                      label: :status,
+                      options: ['cancelled', 'in progress', 'completed'],
+                      selected: @invoice.status,
+                      submit: "Update Invoice Status" } %> </li>
+     
+  <li>Created: <%= "#{@invoice.created_at.strftime("%A, %B %d, %Y")}" %></li>
+  <li>Customer: <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %></li>
 </ul>
 
 
@@ -24,9 +24,16 @@
     <li>Item Quantity: <%= invoice_item.quantity %></li>
     <li>Item Sold For: $<%= convert_to_dollars(invoice_item.unit_price) %></li>
     <li>Item Status: <%= invoice_item.status %></li>
+    <div id="invoice_item-<%=invoice_item.id%>">
+        <li>Bulk Discount Applied: 
+        <% if invoice_item.discount_applied == "No discount applied" %>
+            <%= "No discount applied" %>
+        <% else %>
+            <%= link_to "#{invoice_item.discount_applied}", merchant_bulk_discount_path(@merchant, invoice_item.discount_applied) %></li>
+        <% end %>
+    </div>
 </ul>
 <% end %>
-
 
 <h3>Total Revenue for Invoice <%= @invoice.id %>: $<%= convert_to_dollars(@merchant.total_revenue) %></h3>
 <h3>Total Revenue After Discount: $<%= convert_to_dollars(@merchant.discounted_revenue)%></h3>
