@@ -90,5 +90,19 @@ RSpec.describe 'the bulk discounts index page' do
         end
       end
     end
+
+    describe 'I see a section for upcoming holidays' do
+      let!(:merchant_1) {create(:random_merchant)}
+      let!(:bulk_discount_1) {merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)}
+      let!(:bulk_discount_2) {merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)}
+
+      it 'Lists the name and date of the next 3 upcoming US holidays' do
+       visit merchant_bulk_discounts_path(merchant_1)
+        
+       expect(page).to have_content("Columbus Day")
+       expect(page).to have_content("Veterans Day")
+       expect(page).to have_content("Thanksgiving Day")
+      end
+    end
   end
 end

@@ -24,9 +24,10 @@
   </ul>
 </div>
 
-<div id="Top 5 Merchants"><h2> Top 5 Merchants by Revenue</h2>
-  <ul> <% Merchant.top_5_revenue.each do |merchant| %>
-    <li><p> Name: <%= merchant.name %> </p><p> Best Day: <%= merchant.top_day %></p> </li>
+<div id="top-merchants">
+  <h2> Top 5 Merchants by Revenue</h2>
+    <% @merchants.top_5_revenue.each do |merchant| %>
+      <p> Name: <%= link_to "#{merchant.name}", admin_merchant_path(merchant) %></p>
+      <p> Top selling date for <%= merchant.name %> was <%= merchant.top_day.strftime('%A, %B %d, %Y') %></p> 
     <% end %>
-  </ul>
 </div>

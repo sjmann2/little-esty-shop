@@ -234,9 +234,3 @@ RSpec.describe "the merchant invoices show"  do
     end
   end
 end
-# Merchant Invoice Show Page: Link to applied discounts
-
-# As a merchant
-# When I visit my merchant invoice show page
-# Next to each invoice item I see a link to the show page for the bulk discount that was applied (if any)
- 
