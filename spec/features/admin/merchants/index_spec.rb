@@ -72,36 +72,48 @@ RSpec.describe 'As an admin, when I visit the admin merchant index' do
   describe ":Enable/disable merchant:" do
     it 'has a button that says enable if the merchant is disabled, and vice versa' do
       visit admin_merchants_path
+
       expect(page).to have_button("Disable #{merchant_1.name}")
       expect(merchant_1.enabled).to eq true
+
       click_button("Disable #{merchant_2.name}")
+
       expect(page).to have_button("Enable #{merchant_2.name}")
     end
 
     it 'redirects me to the merchant index page' do
       visit admin_merchants_path
+
       expect(page).to have_button("Disable #{merchant_1.name}")
       expect(merchant_1.enabled).to eq true
-      click_button("Disable #{merchant_2.name}")
-      expect(page).to have_button("Enable #{merchant_2.name}")
 
+      click_button("Disable #{merchant_2.name}")
+
+      expect(page).to have_button("Enable #{merchant_2.name}")
       expect(current_path).to eq(admin_merchants_path)
     end
 
     it 'the button changes the status of an enabled merchant to disabled' do
       visit admin_merchants_path
+
       click_button("Disable #{merchant_1.name}")
+      
       expect(page).to have_button("Enable #{merchant_1.name}")
     end
   end
 
-  # describe ":top 5 merchant display:" do
-  #   it "displays the 5 merchants with the highest total revenue" do
-  #     #within(block) expect(page).to have_content(merchant1 name, revenue)
-  #     #within(block) expect(page).to have_content(merchant1 name, revenue)
-  #     #within(block) expect(page).to have_content(merchant1 name, revenue)
-  #   end
-  # end
+  describe ":top 5 merchant display:" do
+    it "displays the 5 merchants with the highest total revenue" do
+      within '#top-merchants' do
+        expect(page).to have_content(merchant1.name)
+        expect(page).to have_content(merchant1.top_day)
+        expect(page).to have_content(merchant2.name)
+        expect(page).to have_content(merchant2.top_day)
+        expect(page).to have_content(merchant3.name)
+        expect(page).to have_content(merchant3.top_day)
+      end
+    end
+  end
 end
 
 
