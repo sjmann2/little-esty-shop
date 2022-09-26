@@ -1,4 +1,15 @@
 <%= render partial: 'admin/admin_navbar'%>
+<h3>Top Customers</h3>
+
+<% @top_customers.each do |customer| %>
+<div class="float child">
+  <div id="customer-<%=customer.id%>">
+    <ul>
+      <li><%= customer.first_name %> <%= customer.last_name %> - <%= customer.count %> purchases</li>
+    </ul>
+  </div>
+  <% end %>
+</div>
 
 <div class="float-container">
   <div class="float-child">
@@ -14,15 +25,4 @@
     </table>
   </div>
 </div>
-  <h3>Top Customers</h3>
-
-  <% @top_customers.each do |customer| %>
-  <div class="float child">
-    <div id="customer-<%=customer.id%>">
-      <ul>
-        <li><%= customer.first_name %> <%= customer.last_name %> - <%= customer.count %> purchases</li>
-      </ul>
-    </div>
-    <% end %>
-  </div>
 

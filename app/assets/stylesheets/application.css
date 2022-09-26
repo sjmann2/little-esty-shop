@@ -13,7 +13,7 @@
  *= require_tree .
  *= require_self
  */
- .float-container {
+ /* .float-container {
   border: 3px solid #fff;
   padding: 2px;
 }
@@ -23,7 +23,7 @@
   float: left;
   padding: 20px;
   border: 2px solid #fff;
-}  
+}   */
 
 
 table, th, td {
@@ -33,4 +33,11 @@ table, th, td {
 .buttons {
   width: 50%;
   margin: 0 auto;
+}
+footer {
+  padding: 3px;
+  left: 0;
+  bottom:0;
+  background-color: gray;
+  text-align: center;
 }

@@ -11,23 +11,19 @@
   <% if alert %>
     <% flash.each do |type, msg| %>
       <%= msg %>
+    <% end %>
   <% end %>
-<% end %>
 
   <%= yield %>
   </body>
-<%# <footer>
-  <p>Repository name:<%= @repo_name %></p>
 
-  <%# <p>Contributors</p>
-  <ul>
-    <% @user_names.each do |name| %>
-    <%# <li><%= name %>
-    <%# </li>  %>
-    <%# <% end %> 
-  <%# </ul> %> 
-  <%# <p>Pull request amount:<%=@repo_pr_number%>
-  <%# </p> %>
+  <footer>
+  Repository name: <%= @repo_name %> |
 
-<%# </footer> %>
+  Contributors
+  <% @user_names.each do |name| %>
+    <%= name %> |
+    <% end %>  
+   Amount of Pull Requests: <%=@repo_pr_number%></p>
+  </footer>
 </html>
