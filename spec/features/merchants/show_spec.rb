@@ -100,11 +100,11 @@ RSpec.describe "The merchant dashboard" do
           visit merchant_dashboard_path(merchant1)
         
           within("#item-#{item1.id}") do
-            expect(page).to have_content("created at #{invoice1.created_at.strftime("%A,%B %d, %Y")}")
+            expect(page).to have_content("#{invoice1.created_at.strftime("%A, %B %d, %Y")}")
           end
 
           within("#item-#{item2.id}") do
-            expect(page).to have_content("created at #{invoice2.created_at.strftime("%A,%B %d, %Y")}")
+            expect(page).to have_content("#{invoice2.created_at.strftime("%A, %B %d, %Y")}")
           end
           
           expect(item1.name).to appear_before(item2.name)
