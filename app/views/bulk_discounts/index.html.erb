@@ -8,3 +8,9 @@
 <% end %>
 
 <p><%= link_to "Create a new discount", new_merchant_bulk_discount_path(@merchant) %></p>
+Three upcoming US holidays: 
+<ul>
+<% @holidays.each do |holiday| %>
+  <li><%= holiday[:name] %> </li>
+<% end %>
+</ul>
