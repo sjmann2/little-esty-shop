@@ -1,7 +1,7 @@
 require "./app/facade/github_facade"
 
 class ApplicationController < ActionController::Base
-  before_action :user_names, :repo_name, :get_pr
+  before_action :user_names, :repo_name#, :get_pr
 
   def welcome
   end
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     @repo_name = GitHubFacade.repo_name
   end
 
-  def get_pr
-    @repo_pr_number = GitHubFacade.pull_requests
-  end
+  # def get_pr
+  #   @repo_pr_number = GitHubFacade.pull_requests
+  # end
 end

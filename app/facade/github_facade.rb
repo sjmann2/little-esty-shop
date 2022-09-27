@@ -24,10 +24,10 @@ class GitHubFacade
     user_data.map { |user| user[:login] }
   end
 
-  def self.pull_requests
-    pr_data = GitHubService.get_pull_requests
-    pr_data[0][:number]
-  end
+  # def self.pull_requests
+  #   pr_data = GitHubService.get_pull_requests
+  #   pr_data[0][:number]
+  # end
 
   def self.three_upcoming_holidays
     holiday_data = GitHubService.get_us_holidays

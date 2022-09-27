@@ -34,15 +34,15 @@ RSpec.describe(GitHubService) do
   end
   
 
-  it "can get a pull request" do
-    allow(GitHubService).to receive(:get_pull_requests).and_return([{number: 37}])
+  # it "can get a pull request" do
+  #   allow(GitHubService).to receive(:get_pull_requests).and_return([{number: 37}])
 
-    pr_data = GitHubService.get_pull_requests
+  #   pr_data = GitHubService.get_pull_requests
 
-    expect(pr_data).to(be_an(Array))
-    expect(pr_data[0]).to(be_a(Hash))
-    expect(pr_data[0]).to(have_key(:number))
-  end
+  #   expect(pr_data).to(be_an(Array))
+  #   expect(pr_data[0]).to(be_a(Hash))
+  #   expect(pr_data[0]).to(have_key(:number))
+  # end
 
   it 'can get user data' do
     allow(GitHubService).to receive(:get_user_names).and_return([{:login=>"noahvanekdom"}])

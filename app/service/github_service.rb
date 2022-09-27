@@ -12,10 +12,10 @@ class GitHubService
     get_uri_token("https://api.github.com/repos/sjmann2/little-esty-shop/collaborators", headers: {'Authorization' => "Bearer " + ENV["UNAMETOKEN"]})
   end
 
-  def self.get_pull_requests
-    return [{number: 37}] if Rails.env == "test"
-    get_uri("https://api.github.com/repos/sjmann2/little-esty-shop/pulls?state=all")
-  end
+  # def self.get_pull_requests
+  #   return [{number: 37}] if Rails.env == "test"
+  #   get_uri_token("https://api.github.com/repos/sjmann2/little-esty-shop/pulls?state=all", headers: {"Authorization" => "Bearer " + ENV["TOKEN"]})
+  # end
 
   def self.get_us_holidays
     return [{name: 'Columbus Day'}, {name: 'Veterans Day'}, {name: 'Thanksgiving Day'}] if Rails.env == "test"
