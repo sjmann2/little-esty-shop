@@ -21,7 +21,7 @@ class BulkDiscountsController < ApplicationController
     if bulk_discount.save
       redirect_to merchant_bulk_discounts_path(merchant)
     else
-      redirect_to merchant_bulk_discounts_path(merchant)
+      redirect_to new_merchant_bulk_discount_path(merchant)
       flash[:alert] = "Error: #{error_message(bulk_discount.errors)}"
     end
   end
