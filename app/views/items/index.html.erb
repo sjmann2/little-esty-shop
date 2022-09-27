@@ -1,35 +1,36 @@
+<%= render partial: 'merchants/merchant_navbar'%>
+
 <h1><%= @merchant.name %> Items</h1>
   
- <%= link_to "Create New Item", new_merchant_item_path %>
+<p><%= link_to "Create New Item", new_merchant_item_path %></p>
 
-Enabled Items:
+<h2>Enabled Items:</h2>
 
 <ol>
-    <% @enabled_items.each do |item| %>
+  <% @enabled_items.each do |item| %>
     <div id="enabled-items-<%=item.id%>">
-       <li><%=link_to "#{item.name}", merchant_item_path(@merchant, item) %> <%= button_to "Disable #{item.name}", merchant_item_path(@merchant, item), method: :patch, params: {id: @merchant.id} %></li>
-    <% end %>
+      <li><%=link_to "#{item.name}", merchant_item_path(@merchant, item) %> <%= button_to "Disable #{item.name}", merchant_item_path(@merchant, item), method: :patch, params: {id: @merchant.id} %></li>
     </div>
+  <% end %>
 </ol>
 
-Disabled Items:
-
+<h2>Disabled Items:</h2>
 <ol>
-    <% @disabled_items.each do |item| %>
-    <div id="disabled-items-<%=item.id%>">
-       <li><%= link_to "#{item.name}", merchant_item_path(@merchant, item) %> <%= button_to "Enable #{item.name}", merchant_item_path(@merchant, item), method: :patch, params: {id: @merchant.id} %></li>
-    <% end %>
-    </div>
+  <% @disabled_items.each do |item| %>
+  <div id="disabled-items-<%=item.id%>">
+    <li><%= link_to "#{item.name}", merchant_item_path(@merchant, item) %> <%= button_to "Enable #{item.name}", merchant_item_path(@merchant, item), method: :patch, params: {id: @merchant.id} %></li>
+  </div>
+  <% end %>
 </ol>
   
 
 <ul><h2>Top 5 most popular items: </h2>
 
 <% @merchant.top_5_items.each do |item|%>
-<div id="item-<%=item.id%>">
-<li><%= link_to "#{item.name}", "/merchants/#{@merchant.id}/items/#{item.id}" %> -  $<%= convert_to_dollars(item.revenue) %> in sales</li>
-<li>Top day for <%= item.name %> was <%= item.best_day.strftime('%-m/%-d/%y') %></li>
-</div>
+  <div id="item-<%=item.id%>">
+    <li><%= link_to "#{item.name}", "/merchants/#{@merchant.id}/items/#{item.id}" %> -  $<%= convert_to_dollars(item.revenue) %> in sales</li>
+    <li>Top day for <%= item.name %> was <%= item.best_day.strftime('%-m/%-d/%y') %></li>
+  </div>
 <% end %>
 </ul>
 

@@ -1,0 +1,7 @@
+<h1>Little Esty Shop</h1>
+
+<div class="buttons">
+<%= button_to "Dashboard", merchant_dashboard_path(@merchant), local: true, method: :get %>
+<%= button_to "My Items", merchant_items_path(@merchant), local: true, method: :get %>
+<%= button_to "My Invoices", merchant_invoices_path(@merchant), local: true, method: :get %>
+</div>

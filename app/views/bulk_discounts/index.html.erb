@@ -1,3 +1,5 @@
+<%= render partial: 'merchants/merchant_navbar'%>
+
 <h1>Bulk Discounts for <%= @merchant.name %></h1>
 <% @merchant.bulk_discounts.each do |discount| %>
   <div id="bulk-discount-<%=discount.id%>">
