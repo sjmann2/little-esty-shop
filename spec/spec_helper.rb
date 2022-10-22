@@ -11,6 +11,7 @@
 # a separate helper file that requires the additional dependencies and performs
 # the additional setup, and require it from the spec files that actually need
 # it.
+require 'webmock/rspec'
 require 'simplecov'
 SimpleCov.start do
   add_filter "spec/rails_helper.rb"

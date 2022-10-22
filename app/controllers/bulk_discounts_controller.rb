@@ -1,9 +1,7 @@
-require "./app/facade/github_facade"
-
 class BulkDiscountsController < ApplicationController
   def index
     @merchant = Merchant.find(params[:merchant_id])
-    @holidays = GitHubFacade.three_upcoming_holidays
+    @holidays = HolidayFacade.three_upcoming_holidays
   end
 
   def show

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'the bulk discounts index page' do
   describe 'When I visit the bulk discount index page' do
     describe 'I see all of my bulk discounts/percentage discount/quantity thresholds' do
-      it 'displays all bulk discounts and each discount listed includes a link to its show page' do
+      it 'displays all bulk discounts and each discount listed includes a link to its show page', :vcr do
         merchant_1 = create(:random_merchant)
         merchant_2 = create(:random_merchant)
 
@@ -37,7 +37,7 @@ RSpec.describe 'the bulk discounts index page' do
         let!(:bulk_discount_1) {merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)}
         let!(:bulk_discount_2) {merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)}
 
-        it 'displays a link to a form to create a new discount' do
+        it 'displays a link to a form to create a new discount', :vcr do
           visit merchant_bulk_discounts_path(merchant_1)
 
           expect(page).to_not have_content("10% off 5 or more of an item")
@@ -55,7 +55,7 @@ RSpec.describe 'the bulk discounts index page' do
           expect(page).to have_content("10% off 5 or more of an item")
         end
 
-        it 'Will not redirect if I do not fill in fields with valid data' do
+        it 'Will not redirect if I do not fill in fields with valid data', :vcr do
           visit merchant_bulk_discounts_path(merchant_1)
           
           click_link "Create a new discount"
@@ -76,7 +76,7 @@ RSpec.describe 'the bulk discounts index page' do
         let!(:bulk_discount_1) {merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)}
         let!(:bulk_discount_2) {merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)}
 
-        it 'displays a link to delete a bulk discount' do
+        it 'displays a link to delete a bulk discount', :vcr do
           visit merchant_bulk_discounts_path(merchant_1)
           
           expect(page).to have_content("20% off 10 or more of an item")
@@ -96,12 +96,10 @@ RSpec.describe 'the bulk discounts index page' do
       let!(:bulk_discount_1) {merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)}
       let!(:bulk_discount_2) {merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)}
 
-      it 'Lists the name and date of the next 3 upcoming US holidays' do
+      it 'Lists the name of the next 3 upcoming US holidays', :vcr do
        visit merchant_bulk_discounts_path(merchant_1)
         
-       expect(page).to have_content("Columbus Day")
-       expect(page).to have_content("Veterans Day")
-       expect(page).to have_content("Thanksgiving Day")
+       expect(page).to have_content("Three upcoming US holidays")
       end
     end
   end
