@@ -6,11 +6,6 @@ class GitHubService
     return [{name: "little-esty-shop", full_name: "sjmann2/little-esty-shop"}] if Rails.env == "test"
     get_uri_token("https://api.github.com/users/sjmann2/repos", headers: {"Authorization" => "Bearer " + ENV["TOKEN"]})
   end
-  
-  def self.get_user_names
-    return [{login: "noahvanekdom"}] if Rails.env == "test"
-    get_uri_token("https://api.github.com/repos/sjmann2/little-esty-shop/collaborators", headers: {'Authorization' => "Bearer " + ENV["TOKEN"]})
-  end
 
   def self.get_us_holidays
     return [{name: 'Columbus Day'}, {name: 'Veterans Day'}, {name: 'Thanksgiving Day'}] if Rails.env == "test"

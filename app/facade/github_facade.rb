@@ -1,4 +1,4 @@
-require "./app/service/github_service"
+require "./app/services/github_service"
 require "./app/poros/github_repo"
 
 class GitHubFacade
@@ -17,11 +17,6 @@ class GitHubFacade
       end
     end
     nil
-  end
-
-  def self.user_names
-    user_data = GitHubService.get_user_names
-    user_data.map { |user| user[:login] }
   end
 
   def self.three_upcoming_holidays
