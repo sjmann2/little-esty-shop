@@ -18,8 +18,4 @@ class ApplicationController < ActionController::Base
   def repo_name
     @repo_name = GitHubFacade.repo_name
   end
-
-  # def get_pr
-  #   @repo_pr_number = GitHubFacade.pull_requests
-  # end
 end
