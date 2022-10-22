@@ -1,7 +1,7 @@
 require "./app/facade/github_facade"
 
 class ApplicationController < ActionController::Base
-  before_action :user_names, :repo_name#, :get_pr
+  before_action :repo_name
 
   def welcome
   end
@@ -9,10 +9,6 @@ class ApplicationController < ActionController::Base
 
   def error_message(errors)
     errors.full_messages.join(', ')
-  end
-
-  def user_names
-    @user_names = GitHubFacade.user_names
   end
 
   def repo_name

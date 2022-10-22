@@ -1,5 +1,5 @@
 require "rails_helper"
-require "./app/service/github_service"
+require "./app/services/github_service"
 
 
 RSpec.describe(GitHubService) do
@@ -31,16 +31,6 @@ RSpec.describe(GitHubService) do
     expect(repos).to(be_an(Array))
     expect(repos[0]).to(be_a(Hash))
     expect(repos[0]).to(have_key(:name))
-  end
-
-  it 'can get user data' do
-    allow(GitHubService).to receive(:get_user_names).and_return([{:login=>"noahvanekdom"}])
-
-    names = GitHubService.get_user_names
-
-    expect(names).to(be_an(Array))
-    expect(names[0]).to(be_a(Hash))
-    expect(names[0]).to(have_key(:login))
   end
 
   it 'can get a list of us holidays' do
