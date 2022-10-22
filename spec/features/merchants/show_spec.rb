@@ -164,7 +164,7 @@ RSpec.describe "The merchant dashboard" do
     end
 
     describe 'I see a link to view all my discounts that takes me to the bulk discount index page' do
-      it 'displays a link the bulk discount index page for this merchant' do
+      it 'displays a link the bulk discount index page for this merchant', :vcr do
         merchant = create(:random_merchant)
         bulk_discount_a = merchant.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
 

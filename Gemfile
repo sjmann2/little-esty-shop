@@ -53,6 +53,11 @@ group(:development, :test) do
   gem("faker")
   gem("factory_bot_rails")
 end
+
+group :test do
+  gem 'vcr'
+  gem 'webmock'
+end
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
 group(:development) do
   gem("web-console", ">= 3.3.0")
