@@ -3,11 +3,11 @@ require "json"
 
 class GitHubService
   def self.get_repos
-    get_uri("https://api.github.com/users/sjmann2/repos")
+    get_uri("https://api.github.com/users/noahvanekdom/repos")
   end
 
   def self.get_pull_requests
-    get_pr("https://api.github.com/repos/sjmann2/little-esty-shop/pulls?state=all")
+    get_pr("https://api.github.com/repos/noahvanekdom/little-esty-shop/pulls?state=all")
   end
 
   # def self.get_commits
@@ -17,8 +17,8 @@ class GitHubService
   # end
 
   def self.get_uri(uri)
-    return [{name: "little-esty-shop", full_name: "sjmann2/little-esty-shop"}] if Rails.env == "test"
-    response = HTTParty.get(uri,     headers: {"Authorization" => "Bearer " + ENV["TOKEN"]})
+    return [{name: "little-esty-shop", full_name: "noahvanekdom/little-esty-shop"}] if Rails.env == "test"
+    response = HTTParty.get(uri,     headers: {"Authorization" => "Bearer " + ENV["GITHUB_API_KEY"]})
 
     # ENV.fetch('TOKEN')
     JSON.parse(response.body,     symbolize_names: true)
@@ -26,7 +26,7 @@ class GitHubService
 
   def self.request(path, auth_required = false)
     return [{login: "noahvanekdom"}] if Rails.env == "test"
-    response = HTTParty.get("https://api.github.com/repos/sjmann2/little-esty-shop/#{path}",     headers: {authorization: "Bearer " + ENV["UNAMETOKEN"]})
+    response = HTTParty.get("https://api.github.com/repos/noahvanekdom/little-esty-shop/#{path}",     headers: {authorization: "Bearer " + ENV["GITHUB_API_KEY"]})
     JSON.parse(response.body,     symbolize_names: true)
   end
 
